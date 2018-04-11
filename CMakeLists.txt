@@ -31,3 +31,27 @@ ExternalProject_Add(
 
 INCLUDE_DIRECTORIES(${DPDK_BUILD_DIR}/include)
 LINK_DIRECTORIES(${DPDK_BUILD_DIR}/lib)
+
+SET(CMAKE_C_FLAGS "-mssse3")
+
+PROJECT(test_pcap)
+
+SET(SRC
+	main.c)
+
+ADD_EXECUTABLE(${CMAKE_PROJECT_NAME} ${SRC})
+TARGET_LINK_LIBRARIES(${CMAKE_PROJECT_NAME}
+	 -Wl,--whole-archive
+	rte_eal rte_mbuf rte_pmd_pcap rte_mempool rte_ethdev rte_kvargs rte_bus_vdev rte_ring rte_mempool_ring
+
+	-Wl,--as-needed
+	-Wl,--no-whole-archive
+	pcap pthread dl)
+ADD_DEPENDENCIES(${CMAKE_PROJECT_NAME} dpdk)
+
+file(COPY ${CMAKE_SOURCE_DIR}/test_tcp.pcap DESTINATION ${CMAKE_BINARY_DIR})
+
+ADD_CUSTOM_TARGET(run
+	${CMAKE_PROJECT_NAME} --vdev 'net_pcap0,rx_pcap=test_tcp.pcap,tx_pcap=test_tcp_out.pcap' --no-huge
+	DEPENDS ${CMAKE_PROJECT_NAME}
+	WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
