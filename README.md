@@ -39,13 +39,6 @@
 * cmake
 * make (для DPDK)
 
-Необходимо реализовать функцию, которая бы вызывалась из main.c:132
-```
-//
-// Todo тут что-то сделать
-//
-```
-
 В случае чего, аргументы вызова:
 ```
 --vdev 'net_pcap0,rx_pcap=test_tcp.pcap,tx_pcap=test_tcp_out.pcap' --no-huge
