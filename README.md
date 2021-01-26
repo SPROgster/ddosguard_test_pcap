@@ -44,3 +44,5 @@
 ```
 --vdev 'net_pcap0,rx_pcap=test_tcp.pcap,tx_pcap=test_tcp_out.pcap' --no-huge
 ```
+
+PS при установке возможно понадобится доустановить несколько пакетов. Сборка проверялась на Ubuntu 20.04
