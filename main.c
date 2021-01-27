@@ -38,7 +38,7 @@ port_init(uint16_t port, struct rte_mempool *mbuf_pool)
     int retval;
     uint16_t q;
 
-    if (port >= rte_eth_dev_count())
+    if (port >= rte_eth_dev_count_avail())
         return -1;
 
     /* Configure the Ethernet device. */
@@ -94,7 +94,7 @@ port_init(uint16_t port, struct rte_mempool *mbuf_pool)
 static void
 lcore_main(void)
 {
-    const uint16_t nb_ports = rte_eth_dev_count();
+    const uint16_t nb_ports = rte_eth_dev_count_avail();
     uint16_t port;
 
     /*
@@ -171,7 +171,7 @@ main(int argc, char *argv[])
     argv += ret;
 
     /* Check that there is an even number of ports to send/receive on. */
-    nb_ports = rte_eth_dev_count();
+    nb_ports = rte_eth_dev_count_avail();
     if (nb_ports < 1)
         rte_exit(EXIT_FAILURE, "Error: ports not found\n");
 
